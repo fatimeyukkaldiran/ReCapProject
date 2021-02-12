@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
@@ -17,26 +19,56 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
-        public List<Car> GetAll()
+
+        public IResult Add(Car car)
+        {
+            if (car.Description.Length < 10)
+            {
+                //magic strings
+                return new ErrorResult(Messages.CarDescriptionInvalid);
+            }
+            _carDal.Add(car);
+          
+            return new SuccessResult(Messages.CarAdded);
+        }
+
+        public IResult Delete(Car car)
+        {
+            _carDal.Delete(car);
+            return new Result(true, "Car was deleted");
+        }
+
+        public IDataResult<List<Car>> GetAll()
         {
             // Business codes
             // Data Access
-            return _carDal.GetAll();
-        }
 
-        public List<Car> GetAllByBrandId(int id)
-        {
-            return _carDal.GetAll(c => c.BrandId == id);
-        }
-
-        public List<Car> GetByDailyPrice(decimal min, decimal max)
+            if (DateTime.Now.Hour == 22)
             {
-            return _carDal.GetAll(c =>c.DailyPrice >= min && c.DailyPrice <= max);
+                return new ErrorDataResult();
+            }
+            return new SuccessDataResult<List<Car>>( _carDal.GetAll(),true, "Cars was listed");
+        }
+
+        public IDataResult<List<Car>> GetAllByBrandId(int id)
+        {
+            return new DataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == id),true,"Cars brandId was gotten");
+        }
+
+        public IDataResult<List<Car>> GetByDailyPrice(decimal min, decimal max)
+            {
+            return new  DataResult<List<Car>>(_carDal.GetAll(c =>c.DailyPrice >= min && c.DailyPrice <= max),true,"was gotten prices");
             }
 
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return _carDal.GetCarDetails();
+            return new DataResult<List<Car>>(_carDal.GetCarDetails(),true);
+        }
+
+        public IResult Update(Car car)
+        {
+            _carDal.Update(car);
+            return new Result(true, "Car was updated");
         }
     }
 }
