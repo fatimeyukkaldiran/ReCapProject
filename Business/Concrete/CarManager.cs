@@ -22,10 +22,10 @@ namespace Business.Concrete
 
         public IResult Add(Car car)
         {
-            if (car.Description.Length < 10)
+            if (car.DailyPrice < 0)
             {
                 //magic strings
-                return new ErrorResult(Messages.CarDescriptionInvalid);
+                return new ErrorResult(Messages.CarPriceInvalid);
             }
             _carDal.Add(car);
           
@@ -50,9 +50,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>( _carDal.GetAll(),Messages.CarsListed);
         }
 
-        public IDataResult<List<Car>> GetAllByBrandId(int id)
+        public IDataResult<Car> GetById(int id)
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == id));
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == id));
         }
 
         public IDataResult<List<Car>> GetByDailyPrice(decimal min, decimal max)
@@ -71,8 +71,12 @@ namespace Business.Concrete
 
         public IResult Update(Car car)
         {
+            if (car.DailyPrice < 0 || car.Description.Length < 10 || car.Name.Length < 3)
+            {
+                return new ErrorResult(Messages.CarUpdatedFailed);
+            }
             _carDal.Update(car);
-            return new Result(true, "Car was updated");
+            return new SuccessResult(Messages.CarUpdated);
         }
     }
 }

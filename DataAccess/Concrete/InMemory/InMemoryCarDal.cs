@@ -16,11 +16,11 @@ namespace DataAccess.Concrete.InMemory
         {
             _cars = new List<Car>
             {
-                new Car{Id = 1, BrandId = 1, ColorId = 4, DailyPrice = 300, ModelYear = 2010, Description ="Yolcu Airbag,3 Yetişkin,ABS" },
-                new Car{Id = 2, BrandId = 1, ColorId = 4, DailyPrice = 400, ModelYear = 2012, Description ="Yolcu Airbag,4 Yetişkin,ABS" },
-                new Car{Id = 3, BrandId = 2, ColorId = 6, DailyPrice = 350, ModelYear = 2017, Description ="Yolcu Airbag,3 Yetişkin,ABS" },
-                new Car{Id = 4, BrandId = 2, ColorId = 5, DailyPrice = 450, ModelYear = 2019, Description ="Yolcu Airbag,4 Yetişkin,ABS" },
-                new Car{Id = 5, BrandId = 3, ColorId = 5, DailyPrice = 500, ModelYear = 2020, Description ="Yolcu Airbag,5 Yetişkin,ABS" }
+                new Car{Id = 1, BrandId = 1, ColorId = 4, Name = "Jaguar I-Pace", DailyPrice = 300, ModelYear = 2010, Description ="Yolcu Airbag,3 Yetişkin,ABS" },
+                new Car{Id = 2, BrandId = 1, ColorId = 4, Name = "Bmw 3.18i", DailyPrice = 400, ModelYear = 2012, Description ="Yolcu Airbag,4 Yetişkin,ABS" },
+                new Car{Id = 3, BrandId = 2, ColorId = 6, Name = "Ford Focus 1.5", DailyPrice = 350, ModelYear = 2017, Description ="Yolcu Airbag,3 Yetişkin,ABS" },
+                new Car{Id = 4, BrandId = 2, ColorId = 5, Name = "Volvo XC60d", DailyPrice = 450, ModelYear = 2019, Description ="Yolcu Airbag,4 Yetişkin,ABS" },
+                new Car{Id = 5, BrandId = 3, ColorId = 5, Name = "Honda Civic", DailyPrice = 500, ModelYear = 2020, Description ="Yolcu Airbag,5 Yetişkin,ABS" }
 
             };
         }
@@ -70,6 +70,11 @@ namespace DataAccess.Concrete.InMemory
         }
 
         public List<CarDetailDto> GetCarDetails()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CarDetailDto> GetCarDetails(Expression<Func<Car, bool>> filter = null)
         {
             throw new NotImplementedException();
         }
