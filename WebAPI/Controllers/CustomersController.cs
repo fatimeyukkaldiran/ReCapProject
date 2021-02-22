@@ -1,6 +1,4 @@
 ﻿using Business.Abstract;
-using Business.Concrete;
-using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,37 +10,23 @@ using System.Threading.Tasks;
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController] // attribute in c# ,  annotation in java bir class için bilgi verme ve imzalama
-    public class CarsController : ControllerBase //this class has a controller task
-    {    //Loosely coupled
-         //naming convention
-         //IoC Container -- Inversion of Control
-        ICarService _carService;
-       
-        //fieldelerin defaultu private
+    [ApiController]
+    public class CustomersController : ControllerBase
+    {
+        ICustomerService _customerService;
 
-        public CarsController(ICarService carService)
+
+        public CustomersController(ICustomerService customerService)
         {
-            _carService = carService;
+            _customerService = customerService;
         }
 
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
             //dependency chain
-           
-           var result = _carService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-           return  BadRequest(result);
-        }
 
-        [HttpPost("add")] 
-        public IActionResult Add(Car car)
-        {
-            var result = _carService.Add(car);
+            var result = _customerService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -50,10 +34,22 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("delete")]
-        public IActionResult Delete(Car car)
+        [HttpPost("add")]
+        public IActionResult Add(Customer customer)
         {
-            var result = _carService.Delete(car);
+            var result = _customerService.Add(customer);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+
+        [HttpPost("delete")]
+        public IActionResult Delete(Customer customer)
+        {
+            var result = _customerService.Delete(customer);
             if (result.Success)
             {
                 return Ok(result);
@@ -62,9 +58,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(Car car)
+        public IActionResult Update(Customer customer)
         {
-            var result = _carService.Update(car);
+            var result = _customerService.Update(customer);
             if (result.Success)
             {
                 return Ok(result);
@@ -72,11 +68,10 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-
         [HttpGet("getbyid")]
         public IActionResult GetById(int id)
         {
-            var result = _carService.GetById(id);
+            var result = _customerService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);

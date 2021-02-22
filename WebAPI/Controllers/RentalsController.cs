@@ -1,6 +1,4 @@
 ﻿using Business.Abstract;
-using Business.Concrete;
-using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,37 +10,22 @@ using System.Threading.Tasks;
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController] // attribute in c# ,  annotation in java bir class için bilgi verme ve imzalama
-    public class CarsController : ControllerBase //this class has a controller task
-    {    //Loosely coupled
-         //naming convention
-         //IoC Container -- Inversion of Control
-        ICarService _carService;
-       
-        //fieldelerin defaultu private
+    [ApiController]
+    public class RentalsController : ControllerBase
+    {
+        //IoC Container -- Inversion of Control
+        IRentalService _rentalService;
 
-        public CarsController(ICarService carService)
+        public RentalsController(IRentalService rentalService)
         {
-            _carService = carService;
+            _rentalService = rentalService;
         }
 
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
-            //dependency chain
            
-           var result = _carService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-           return  BadRequest(result);
-        }
-
-        [HttpPost("add")] 
-        public IActionResult Add(Car car)
-        {
-            var result = _carService.Add(car);
+            var result = _rentalService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -50,10 +33,22 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("delete")]
-        public IActionResult Delete(Car car)
+        [HttpPost("add")]
+        public IActionResult Add(Rental rental)
         {
-            var result = _carService.Delete(car);
+            var result = _rentalService.Add(rental);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+
+        [HttpPost("delete")]
+        public IActionResult Delete(Rental rental)
+        {
+            var result = _rentalService.Delete(rental);
             if (result.Success)
             {
                 return Ok(result);
@@ -62,9 +57,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(Car car)
+        public IActionResult Update(Rental rental)
         {
-            var result = _carService.Update(car);
+            var result = _rentalService.Update(rental);
             if (result.Success)
             {
                 return Ok(result);
@@ -72,11 +67,10 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-
         [HttpGet("getbyid")]
         public IActionResult GetById(int id)
         {
-            var result = _carService.GetById(id);
+            var result = _rentalService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);

@@ -1,6 +1,4 @@
 ﻿using Business.Abstract;
-using Business.Concrete;
-using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,37 +10,34 @@ using System.Threading.Tasks;
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController] // attribute in c# ,  annotation in java bir class için bilgi verme ve imzalama
-    public class CarsController : ControllerBase //this class has a controller task
-    {    //Loosely coupled
-         //naming convention
-         //IoC Container -- Inversion of Control
-        ICarService _carService;
-       
-        //fieldelerin defaultu private
+    [ApiController]
+    public class BrandsController : ControllerBase
+    {
+        IBrandService _brandService;
 
-        public CarsController(ICarService carService)
+
+        public BrandsController(IBrandService brandService)
         {
-            _carService = carService;
+            _brandService = brandService;
         }
 
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
             //dependency chain
-           
-           var result = _carService.GetAll();
+
+            var result = _brandService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
             }
-           return  BadRequest(result);
+            return BadRequest(result);
         }
 
-        [HttpPost("add")] 
-        public IActionResult Add(Car car)
+        [HttpPost("add")]
+        public IActionResult Add(Brand brand)
         {
-            var result = _carService.Add(car);
+            var result = _brandService.Add(brand);
             if (result.Success)
             {
                 return Ok(result);
@@ -51,9 +46,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Car car)
+        public IActionResult Delete(Brand brand)
         {
-            var result = _carService.Delete(car);
+            var result = _brandService.Delete(brand);
             if (result.Success)
             {
                 return Ok(result);
@@ -62,9 +57,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(Car car)
+        public IActionResult Update(Brand brand)
         {
-            var result = _carService.Update(car);
+            var result = _brandService.Update(brand);
             if (result.Success)
             {
                 return Ok(result);
@@ -72,11 +67,10 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-
         [HttpGet("getbyid")]
         public IActionResult GetById(int id)
         {
-            var result = _carService.GetById(id);
+            var result = _brandService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);

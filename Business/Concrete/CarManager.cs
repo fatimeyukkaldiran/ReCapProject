@@ -43,7 +43,7 @@ namespace Business.Concrete
             // Business codes
             // Data Access
 
-            if (DateTime.Now.Hour == 22)
+            if (DateTime.Now.Hour == 21)
             {
                 return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
             }
@@ -52,7 +52,7 @@ namespace Business.Concrete
 
         public IDataResult<Car> GetById(int id)
         {
-            return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == id));
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == id), Messages.CarsListed);
         }
 
         public IDataResult<List<Car>> GetByDailyPrice(decimal min, decimal max)
