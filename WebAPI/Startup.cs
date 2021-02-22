@@ -33,13 +33,13 @@ namespace WebAPI
             //IoC Container --> Autofac,Ninject,CastleWindsor, StructureMap, LightInject,DryInject -->IoC Container
            //AOP 
            //Potsharp
-           //Autofac : instance üretimi saðlayan bir yapýya sahip
+           //Autofac : instance üretimi saðlayan bir yapýya sahip, ayný zamanda AOP destei veriyor
             services.AddControllers();
-            services.AddSingleton<ICarService, CarManager>(); //do new operation on back
-            services.AddSingleton<ICarDal, EfCarDal>();
+            //services.AddSingleton<ICarService, CarManager>(); //do new operation on back
+            //services.AddSingleton<ICarDal, EfCarDal>();
 
-            services.AddSingleton<IBrandService, BrandManager>();
-            services.AddSingleton<IBrandDal, EfBrandDal>();
+            //services.AddSingleton<IBrandService, BrandManager>();
+            //services.AddSingleton<IBrandDal, EfBrandDal>();
 
             services.AddSingleton<IColorService, ColorManager>();
             services.AddSingleton<IColorDal, EfColorDal>();

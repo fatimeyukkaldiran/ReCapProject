@@ -10,8 +10,8 @@ namespace Business.Constants
         //Car messages
         public static string CarAdded = "The car was added!";
         public static string CarDescriptionInvalid = "The car description is invalid";
-        internal static string MaintenanceTime = "system is under maintenance";
-        internal static string CarsListed = "Cars were listed";
+        public static string MaintenanceTime = "system is under maintenance";
+        public static string CarsListed = "Cars were listed";
         public static string CarNameInvalid = "The car name is invalid";
         public static string CarPriceInvalid = "The car price is invalid";
         public static string CarUpdatedFailed = "Update failed, check values";
@@ -22,7 +22,7 @@ namespace Business.Constants
         public static string BrandDeleted = "The brand was deleted!";
         public static string BrandUpdated = "The brand was updated!";
         public static string BrandNameInvalid = "The brand name is invalid!!";
-
+        public static string BrandsListed = "Brands were listed";
         //color messages
         public static string ColorAdded = "The Color was added!";
         public static string ColorDeleted = "The Color was deleted!";
