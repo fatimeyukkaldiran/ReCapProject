@@ -1,10 +1,13 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,11 +25,10 @@ namespace Business.Concrete
 
         public IResult Add(Car car)
         {
-            if (car.DailyPrice < 0)
-            {
-                //magic strings
-                return new ErrorResult(Messages.CarPriceInvalid);
-            }
+            //validation
+         
+            ValidationTool.Validate(new CarValidator(), car);
+
             _carDal.Add(car);
           
             return new SuccessResult(Messages.CarAdded);
@@ -71,10 +73,9 @@ namespace Business.Concrete
 
         public IResult Update(Car car)
         {
-            if (car.DailyPrice < 0 || car.Description.Length < 10 || car.Name.Length < 3)
-            {
-                return new ErrorResult(Messages.CarUpdatedFailed);
-            }
+
+            ValidationTool.Validate(new CarValidator(), car);
+
             _carDal.Update(car);
             return new SuccessResult(Messages.CarUpdated);
         }

@@ -15,13 +15,12 @@ namespace WebAPI.Controllers
     {
         IBrandService _brandService;
 
-
         public BrandsController(IBrandService brandService)
         {
             _brandService = brandService;
         }
 
-        [HttpGet("getall")]
+        [HttpGet(template: "getall")]
         public IActionResult GetAll()
         {
             //dependency chain
