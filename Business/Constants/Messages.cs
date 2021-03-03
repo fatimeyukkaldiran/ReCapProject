@@ -16,7 +16,7 @@ namespace Business.Constants
         public static string CarPriceInvalid = "The car price is invalid";
         public static string CarUpdatedFailed = "Update failed, check values";
         public static string CarUpdated = "The car was updated!";
-
+        public static string CarImageLimitExceeded = "The car images limit exceeded";
         //Brand Messages
         public static string BrandAdded = "The brand was added!";
         public static string BrandDeleted = "The brand was deleted!";
@@ -49,5 +49,17 @@ namespace Business.Constants
         public static string FailedRental = "Can't rent this car as it hasn't been delivered yet!";
         public static string ReturnedRental = "The car has been delivered";
         public static string ReturnedRentalError = "The car already has been delivered";
+        public static string FailedAddedImageLimit = "The car's images must be less than 5";
+
+
+        //JWT
+        public static string AuthorizationDenied = "You do not have authorization";
+        public static string PasswordError = "The password is false";
+        public static string UserNotFound = "The user is not found";
+        public static string SuccessfulLogin = "The login is successfull";
+        public static string UserAlreadyExists = "This user is already exists";
+        public static string AccessTokenCreated = "Access Token Created";
+        public static string UserRegistered = "The user was registered";
+       
     }
 }

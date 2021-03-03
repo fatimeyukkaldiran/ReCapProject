@@ -11,8 +11,8 @@ namespace Business.ValidationRules
         public UserValidator()
         {
             RuleFor(u => u.Email).NotEmpty();
-            RuleFor(u => u.Password).NotEmpty();
-            RuleFor(u => u.Password).MinimumLength(6);
+            RuleFor(u => u.PasswordHash).NotEmpty();
+           // RuleFor(u => u.PasswordSalt).MinimumLength(6);
             RuleFor(u => u.FirstName).NotEmpty();
         }
     }
