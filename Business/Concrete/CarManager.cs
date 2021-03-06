@@ -2,6 +2,9 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Performance;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
@@ -13,6 +16,7 @@ using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace Business.Concrete
 {
@@ -27,6 +31,7 @@ namespace Business.Concrete
 
         [SecuredOperation("car.add, admin")]
         [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car car)
         {
             //validation
@@ -44,28 +49,37 @@ namespace Business.Concrete
             return new Result(true, "Car was deleted");
         }
 
+        [CacheAspect]
+        [PerformanceAspect(5)]
         public IDataResult<List<Car>> GetAll()
         {
+            Thread.Sleep(5000);
+
             // Business codes
             // Data Access
 
-            if (DateTime.Now.Hour == 21)
+            if (DateTime.Now.Hour == 23)
             {
                 return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
             }
             return new SuccessDataResult<List<Car>>( _carDal.GetAll(),Messages.CarsListed);
         }
 
+        [CacheAspect(duration: 10)]
+        [PerformanceAspect(20)]
         public IDataResult<Car> GetById(int id)
         {
             return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == id), Messages.CarsListed);
         }
 
+        [CacheAspect(duration: 10)]
         public IDataResult<List<Car>> GetByDailyPrice(decimal min, decimal max)
             {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c =>c.DailyPrice >= min && c.DailyPrice <= max));
             }
 
+        [SecuredOperation("car.list,admin")]
+        [CacheRemoveAspect("ICarService.Get")]
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
             if (DateTime.Now.Hour == 3)
@@ -76,9 +90,18 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car car)
         {
             _carDal.Update(car);
+            return new SuccessResult(Messages.CarUpdated);
+        }
+
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Car car)
+        {
+            _carDal.Update(car);
+            _carDal.Add(car);
             return new SuccessResult(Messages.CarUpdated);
         }
     }
